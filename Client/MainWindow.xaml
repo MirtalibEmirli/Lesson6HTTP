@@ -1,0 +1,40 @@
+﻿<Window x:Class="Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client"
+        mc:Ignorable="d"
+        Title="Client" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions >
+            <ColumnDefinition Width="1.7*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ListView ItemsSource="{Binding processList,UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" x:Name="prListView">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn  Width="100"  Header="Id" DisplayMemberBinding="{Binding Id}" />
+                    <GridViewColumn Header="Name" Width="130"  DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn  Width="130"  Header="Surname" DisplayMemberBinding="{Binding Surname}" />
+                    <GridViewColumn  Width="110"  Header="Age" DisplayMemberBinding="{Binding Age}" />
+
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <StackPanel Grid.Column="1">
+            
+            <TextBox Name="Id" Width="220" Height="40" HorizontalAlignment="Center"/>
+
+            <TextBox Name="Name" Width="220" Height="40" HorizontalAlignment="Center"/>
+            <TextBox Name="Surname" Width="220" Height="40" HorizontalAlignment="Center"/>
+            <TextBox Name="Age" Width="220" Height="40" HorizontalAlignment="Center"/>
+            <Button Margin="10"  Content="Add|Update" Name="Add" Height="64" Click="Add_Click"/>
+            <Button Margin="10"  Content="GetAll" Name="Get" Height="64" Click="Get_Click"/>
+
+            <Button Margin="10" Content="Delete" Name="Delete" Height="54" Click="Delete_Click"/>
+        </StackPanel>
+
+    </Grid>
+</Window>
