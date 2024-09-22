@@ -52,9 +52,11 @@ public partial class MainWindow : Window
     }
     private void Deletefunc()
     {
+
+        string id = Id.Text;
         Task.Run(async () =>
         {
-            var response = await httpClient.GetAsync("http://localhost:27001/delete/0");
+            var response = await httpClient.DeleteAsync($"http://localhost:27001/delete/{id}");//isdyr
 
         });
     }

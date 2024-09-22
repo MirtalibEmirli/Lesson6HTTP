@@ -17,10 +17,12 @@ try
 
             while (true)
             {
+
                 var context = server.GetContext();
                 var requestt = context.Request;
                 var method = requestt.HttpMethod;
                 var url = requestt.RawUrl;
+                Console.WriteLine($"Received request: {method} {url}");
 
                 if (method == "POST" && url.Contains("/add"))
                 {
@@ -53,7 +55,7 @@ try
                     }
                     Console.WriteLine(jsons);
                 }
-                else if (requestt.HttpMethod == "DELETE"&&url.Contains("/delete")  )//
+                else if (requestt.HttpMethod == "DELETE"&& url.StartsWith("/delete/"))//
 
                 {
                     var id = url.Split('/').Last();

@@ -9,10 +9,10 @@ namespace Server.Services
 {
     public static class UserService
     {
-
+        static string json = "C:\\Users\\Mirtalib\\source\\repos\\Lesson6HTTP\\Server\\MOCK_DATA (1).json";
         public static List<User> GetAll()
         {
-            var data = File.ReadAllText("C:\\Users\\Mirtalib\\source\\repos\\Lesson6HTTP\\Server\\MOCK_DATA (1).json");
+            var data = File.ReadAllText(json);
             var users = JsonSerializer.Deserialize<List<User>>(data);
             
             return users;
@@ -20,30 +20,48 @@ namespace Server.Services
 
         public static void  Add(User u)
         {
-            var data = File.ReadAllText("C:\\Users\\Mirtalib\\source\\repos\\Lesson6HTTP\\Server\\MOCK_DATA (1).json");
-            var users = JsonSerializer.Deserialize<List<User>>(data);
-            users.Add(u);
-            var jsons = JsonSerializer.Serialize(users);
-            File.WriteAllText("C:\\Users\\Amirl_kl34\\source\\repos\\LEsson6HTTP\\Server\\MOCK_DATA (1).json", jsons);
+            try
+            {
+                var data = File.ReadAllText(json);
+                var users = JsonSerializer.Deserialize<List<User>>(data);
+                users.Add(u);
+                var jsons = JsonSerializer.Serialize(users);
+                File.WriteAllText(json, jsons);
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public static bool Delete(int id)
         {
-            var data = File.ReadAllText("C:\\Users\\Mirtalib\\source\\repos\\Lesson6HTTP\\Server\\MOCK_DATA (1).json");
-            var users = JsonSerializer.Deserialize<List<User>>(data);
-            var a = false;
-            foreach (var item in users)
+                var a = false;
+            try
             {
-                if (item.Id == id)
+
+                var data = File.ReadAllText(json);
+                var users = JsonSerializer.Deserialize<List<User>>(data);
+                foreach (var item in users)
                 {
-                    users.Remove(item);
-                    a = true;
-                    break;
+                    if (item.Id == id)
+                    {
+                        users.Remove(item);
+                        a = true;
+                        break;
+                    }
                 }
+                var jsons = JsonSerializer.Serialize(users);
+                File.WriteAllText(json, jsons);
             }
-            var jsons = JsonSerializer.Serialize(users);
-            File.WriteAllText("C:\\Users\\Amirl_kl34\\source\\repos\\LEsson6HTTP\\Server\\MOCK_DATA (1).json", jsons);
-            return a;
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+            }
+                return a;
+
         }
     }
 }

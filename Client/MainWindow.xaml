@@ -24,12 +24,30 @@
         </ListView>
 
         <StackPanel Grid.Column="1">
-            
-            <TextBox Name="Id" Width="220" Height="40" HorizontalAlignment="Center"/>
 
-            <TextBox Name="Name" Width="220" Height="40" HorizontalAlignment="Center"/>
-            <TextBox Name="Surname" Width="220" Height="40" HorizontalAlignment="Center"/>
-            <TextBox Name="Age" Width="220" Height="40" HorizontalAlignment="Center"/>
+            <StackPanel  Orientation="Horizontal" >
+                <Label Content="id"/>
+                <TextBox Name="Id" Width="220" Height="40" HorizontalAlignment="Center"/>
+            </StackPanel>
+
+
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Name"/>
+                <TextBox Name="Name" Width="220" Height="40" HorizontalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel>
+                <Label Content="SurName"/>
+
+                <TextBox Name="Surname" Width="220" Height="40" HorizontalAlignment="Center"/>
+            </StackPanel>
+
+
+            <StackPanel>
+                <Label Content="Age"/>
+                <TextBox Name="Age" Width="220" Height="40" HorizontalAlignment="Center"/>
+            </StackPanel>
+         
+            
             <Button Margin="10"  Content="Add|Update" Name="Add" Height="64" Click="Add_Click"/>
             <Button Margin="10"  Content="GetAll" Name="Get" Height="64" Click="Get_Click"/>
 
