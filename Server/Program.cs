@@ -17,36 +17,80 @@ try
 
             while (true)
             {
-
                 var context = server.GetContext();
+                var requestt = context.Request;
+                var method = requestt.HttpMethod;
+                var url = requestt.RawUrl;
 
-                var url = context.Request.RawUrl;
-                var u = url?.Split('/').ToList();
-                //Console.WriteLine(url.Split('/').Last());
-
-                var serviceName = $"Server.Services.{u[1]}Service";
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                Type? type = assembly.GetType(serviceName);
-                if (type is { })
+                if (method == "POST" && url.Contains("/add"))
                 {
-                    var service = Activator.CreateInstance(type) as UserService;
-                    var methodName = url?.Split('/').Last();
-                    var mi = type.GetMethod(methodName);
-                    if (methodName=="GetAll")
-                        mi?.Invoke(service, null);
-                    else
+
+                    using (var reader = new StreamReader(requestt.InputStream))
                     {
-
-                        var request = context.Request;
-                        var stream = request.InputStream;
-                        var bytes = new byte[1024];
-                        var userData = stream.Read(bytes,0,bytes.Length);
-
-                        var user = JsonSerializer.Deserialize<User>(Encoding.UTF8.GetString(bytes));
-                   
-                      //  mi?.Invoke(service,);
+                        var user = JsonSerializer.Deserialize<User>(reader.ReadToEnd());
+                        Console.WriteLine(user?.Name + "Posted");
+                        UserService.Add(user);
+                        using var response = context.Response;
+                        var message = $"{user.Name} added";
+                        var buffer = Encoding.UTF8.GetBytes(message);
+                        response.ContentEncoding = Encoding.UTF8;
+                        response.ContentLength64 = buffer.Length;
+                        response.OutputStream.Write(buffer, 0, buffer.Length);
                     }
                 }
+                else if (requestt.HttpMethod == "GET" && url.Contains("/get"))
+                {
+
+                    var jsons = JsonSerializer.Serialize<List<User>>(UserService.GetAll());
+
+                    using var response = context.Response;
+                    var buffer = Encoding.UTF8.GetBytes(jsons);
+                    response.ContentLength64 = buffer.Length;
+                    response.ContentType = "application/json";
+                    using (var stream = response.OutputStream)
+                    {
+                        stream.Write(buffer, 0, buffer.Length);
+                    }
+                    Console.WriteLine(jsons);
+                }
+                else if (requestt.HttpMethod == "DELETE"&&url.Contains("/delete")  )//
+
+                {
+                    var id = url.Split('/').Last();
+                    if (int.TryParse(id, out int userid))
+                    {
+                        var succes = UserService.Delete(userid);
+                        using var response = context.Response;
+                        if (succes)
+                        {
+                            response.StatusCode = (int)HttpStatusCode.OK;
+                            var message = Encoding.UTF8.GetBytes("User deleted");
+                            response.ContentLength64 = message.Length;
+                            response.OutputStream.Write(message, 0, message.Length);
+
+
+                        }
+                        else
+                        {
+                            response.StatusCode = (int)HttpStatusCode.NotFound;
+                            var messsage = Encoding.UTF8.GetBytes("User not found");
+                            response.ContentLength64 = messsage.Length;
+                            response.OutputStream.Write(messsage, 0, messsage.Length);
+
+                        }
+                    }
+
+                }
+                else
+                {
+                    var data = File.ReadAllBytes("C:\\Users\\Mirtalib\\source\\repos\\Lesson6HTTP\\Server\\Views\\HTMLPage1.html");
+                    context.Response.ContentType = "text/html";
+                    context.Response.OutputStream.Write(data, 0, data.Length);
+
+                    context.Response.Close();
+
+                }
+
 
 
             }

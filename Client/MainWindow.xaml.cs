@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net.Http;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -14,11 +15,12 @@ namespace Client;
 
 public partial class MainWindow : Window
 {
-
+    HttpClient httpClient;
 
     public MainWindow()
     {
         InitializeComponent();
+        httpClient = new HttpClient();
     }
 
     private void Add_Click(object sender, RoutedEventArgs e)
@@ -50,12 +52,9 @@ public partial class MainWindow : Window
     }
     private void Deletefunc()
     {
-        Task.Run(() =>
+        Task.Run(async () =>
         {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                MessageBox.Show("A");
-            });
+            var response = await httpClient.GetAsync("http://localhost:27001/delete/0");
 
         });
     }
@@ -63,12 +62,11 @@ public partial class MainWindow : Window
     {
         Task.Run(() =>
         {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                MessageBox.Show("GetAllfunc");
-            });
 
+           
         });
     }
+
+
 
 }

@@ -7,39 +7,43 @@ using System.Threading.Tasks;
 
 namespace Server.Services
 {
-    public class UserService
+    public static class UserService
     {
 
-        public List<User> GetAll()
+        public static List<User> GetAll()
         {
-            var data = File.ReadAllText("C:\\Users\\Amirl_kl34\\source\\repos\\LEsson6HTTP\\Server\\MOCK_DATA (1).json");
+            var data = File.ReadAllText("C:\\Users\\Mirtalib\\source\\repos\\Lesson6HTTP\\Server\\MOCK_DATA (1).json");
             var users = JsonSerializer.Deserialize<List<User>>(data);
-            Console.WriteLine(users[1].Name);
+            
             return users;
         }
 
-        public void Add(User u)
+        public static void  Add(User u)
         {
-            var data = File.ReadAllText("C:\\Users\\Amirl_kl34\\source\\repos\\LEsson6HTTP\\Server\\MOCK_DATA (1).json");
+            var data = File.ReadAllText("C:\\Users\\Mirtalib\\source\\repos\\Lesson6HTTP\\Server\\MOCK_DATA (1).json");
             var users = JsonSerializer.Deserialize<List<User>>(data);
             users.Add(u);
             var jsons = JsonSerializer.Serialize(users);
             File.WriteAllText("C:\\Users\\Amirl_kl34\\source\\repos\\LEsson6HTTP\\Server\\MOCK_DATA (1).json", jsons);
         }
 
-        public void Delete(User u)
+        public static bool Delete(int id)
         {
-            var data = File.ReadAllText("C:\\Users\\Amirl_kl34\\source\\repos\\LEsson6HTTP\\Server\\MOCK_DATA (1).json");
+            var data = File.ReadAllText("C:\\Users\\Mirtalib\\source\\repos\\Lesson6HTTP\\Server\\MOCK_DATA (1).json");
             var users = JsonSerializer.Deserialize<List<User>>(data);
+            var a = false;
             foreach (var item in users)
             {
-                if (item == u)
+                if (item.Id == id)
                 {
-                    users.Remove(u); break;
+                    users.Remove(item);
+                    a = true;
+                    break;
                 }
             }
             var jsons = JsonSerializer.Serialize(users);
             File.WriteAllText("C:\\Users\\Amirl_kl34\\source\\repos\\LEsson6HTTP\\Server\\MOCK_DATA (1).json", jsons);
+            return a;
         }
     }
 }
