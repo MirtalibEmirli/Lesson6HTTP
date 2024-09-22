@@ -31,13 +31,17 @@ try
                     {
                         var user = JsonSerializer.Deserialize<User>(reader.ReadToEnd());
                         Console.WriteLine(user?.Name + "Posted");
-                        UserService.Add(user);
-                        using var response = context.Response;
-                        var message = $"{user.Name} added";
-                        var buffer = Encoding.UTF8.GetBytes(message);
-                        response.ContentEncoding = Encoding.UTF8;
-                        response.ContentLength64 = buffer.Length;
-                        response.OutputStream.Write(buffer, 0, buffer.Length);
+                        if (user is not null)
+                        {
+                            UserService.Add(user);
+                            using var response = context.Response;
+                            var message = $"{user.Name} added";
+                            var buffer = Encoding.UTF8.GetBytes(message);
+                            response.ContentEncoding = Encoding.UTF8;
+                            response.ContentLength64 = buffer.Length;
+                            response.OutputStream.Write(buffer, 0, buffer.Length);
+                        }
+                     
                     }
                 }
                 else if (requestt.HttpMethod == "GET" && url.Contains("/get"))
@@ -66,7 +70,7 @@ try
                         if (succes)
                         {
                             response.StatusCode = (int)HttpStatusCode.OK;
-                            var message = Encoding.UTF8.GetBytes("User deleted");
+                            var message = Encoding.UTF8.GetBytes($"User {id} deleted");
                             response.ContentLength64 = message.Length;
                             response.OutputStream.Write(message, 0, message.Length);
 

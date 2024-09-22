@@ -14,19 +14,33 @@ namespace Server.Services
         {
             var data = File.ReadAllText(json);
             var users = JsonSerializer.Deserialize<List<User>>(data);
-            
+
             return users;
         }
 
-        public static void  Add(User u)
+        public static void Add(User u)
         {
             try
             {
+                var c = true;
                 var data = File.ReadAllText(json);
                 var users = JsonSerializer.Deserialize<List<User>>(data);
-                users.Add(u);
+
+                foreach (var item in users)
+                {
+                    if (u.Id == item.Id)
+                    {
+                        users.Remove(item);
+                        users.Add(u); c = true; break;
+                    }
+                }
+                if (c)
+                {
+                    users.Add(u);
+                }
                 var jsons = JsonSerializer.Serialize(users);
                 File.WriteAllText(json, jsons);
+
             }
             catch (Exception ex)
             {
@@ -37,7 +51,7 @@ namespace Server.Services
 
         public static bool Delete(int id)
         {
-                var a = false;
+            var a = false;
             try
             {
 
@@ -60,7 +74,7 @@ namespace Server.Services
 
                 Console.WriteLine(ex.Message);
             }
-                return a;
+            return a;
 
         }
     }

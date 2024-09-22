@@ -7,52 +7,48 @@
         mc:Ignorable="d"
         Title="Client" Height="450" Width="800">
     <Grid>
-        <Grid.ColumnDefinitions >
+        <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1.7*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ListView ItemsSource="{Binding processList,UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" x:Name="prListView">
+        <ListView ItemsSource="{Binding userList, UpdateSourceTrigger=PropertyChanged}" 
+                  SelectedItem="{Binding selectedUser, Mode=TwoWay}" 
+                  Grid.Row="0" x:Name="prListView">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn  Width="100"  Header="Id" DisplayMemberBinding="{Binding Id}" />
-                    <GridViewColumn Header="Name" Width="130"  DisplayMemberBinding="{Binding Name}" />
-                    <GridViewColumn  Width="130"  Header="Surname" DisplayMemberBinding="{Binding Surname}" />
-                    <GridViewColumn  Width="110"  Header="Age" DisplayMemberBinding="{Binding Age}" />
-
+                    <GridViewColumn Width="100" Header="Id" DisplayMemberBinding="{Binding Id}" />
+                    <GridViewColumn Header="Name" Width="130" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Width="130" Header="Surname" DisplayMemberBinding="{Binding SurName}" />
+                    <GridViewColumn Width="110" Header="Age" DisplayMemberBinding="{Binding Age}" />
                 </GridView>
             </ListView.View>
         </ListView>
 
+
         <StackPanel Grid.Column="1">
-
-            <StackPanel  Orientation="Horizontal" >
+            <StackPanel Orientation="Horizontal">
                 <Label Content="id"/>
-                <TextBox Name="Id" Width="220" Height="40" HorizontalAlignment="Center"/>
+                <TextBox Name="Id" Text="{Binding selectedUser.Id}" Width="220" Height="40" HorizontalAlignment="Center"/>
             </StackPanel>
-
 
             <StackPanel Orientation="Horizontal">
                 <Label Content="Name"/>
-                <TextBox Name="Name" Width="220" Height="40" HorizontalAlignment="Center"/>
+                <TextBox Text="{Binding selectedUser.Name}" Name="Name" Width="220" Height="40" HorizontalAlignment="Center"/>
             </StackPanel>
+
             <StackPanel>
-                <Label Content="SurName"/>
-
-                <TextBox Name="Surname" Width="220" Height="40" HorizontalAlignment="Center"/>
+                <Label Content="Surname"/>
+                <TextBox Name="Surname" Text="{Binding selectedUser.SurName}" Width="220" Height="40" HorizontalAlignment="Center"/>
             </StackPanel>
-
 
             <StackPanel>
                 <Label Content="Age"/>
-                <TextBox Name="Age" Width="220" Height="40" HorizontalAlignment="Center"/>
+                <TextBox Name="Age" Text="{Binding selectedUser.Age}" Width="220" Height="40" HorizontalAlignment="Center"/>
             </StackPanel>
-         
-            
-            <Button Margin="10"  Content="Add|Update" Name="Add" Height="64" Click="Add_Click"/>
-            <Button Margin="10"  Content="GetAll" Name="Get" Height="64" Click="Get_Click"/>
 
-            <Button Margin="10" Content="Delete" Name="Delete" Height="54" Click="Delete_Click"/>
+            <Button Content="Add|Update" Name="Add" Height="64" Click="Add_Click"/>
+            <Button Margin="3" Content="GetAll" Name="Get" Height="64" Click="Get_Click"/>
+            <Button Content="Delete" Name="Delete" Height="54" Click="Delete_Click"/>
         </StackPanel>
-
     </Grid>
 </Window>
